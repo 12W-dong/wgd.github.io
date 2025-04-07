@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>主角抽籤器</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+    }
+
+    .container {
+      background-color: white;
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+      margin-bottom: 20px;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    #result {
+      font-size: 20px;
+      color: #333;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <button onclick="drawLottery()">开始抽籤</button>
+    <div id="result"></div>
+  </div>
+
+  <script>
+    function drawLottery() {
+      // 构建新数组，使张於航出现次数占比达到95%
+      const totalCount = 100;
+      const zhangCount = Math.floor(totalCount * 0.95);
+      const otherMembers = ["張子軒", "吳官東", "張建營"];
+      const members = [];
+      for (let i = 0; i < zhangCount; i++) {
+        members.push("張於航");
+      }
+      const remainingCount = totalCount - zhangCount;
+      const step = Math.ceil(remainingCount / otherMembers.length);
+      let index = 0;
+      for (let i = 0; i < remainingCount; i++) {
+        if (index >= otherMembers.length) {
+          index = 0;
+        }
+        members.push(otherMembers[index]);
+        index++;
+      }
+
+      const randomIndex = Math.floor(Math.random() * members.length);
+      const result = members[randomIndex];
+
+      document.getElementById('result').innerHTML = `${result} 當主角`;
+
+      const synth = window.speechSynthesis;
+      const utterance = new SpeechSynthesisUtterance();
+      utterance.text = `${result} 當主角`;
+      synth.speak(utterance);
+    }
+  </script>
+</body>
+
+</html>
